@@ -9,7 +9,7 @@ const RootLayout = () => {
             <header>
                 <Navbar></Navbar>
             </header>
-            <main className='min-h-screen'>
+            <main className='min-h-screen py-20'>
                 <Outlet />
             </main>
 

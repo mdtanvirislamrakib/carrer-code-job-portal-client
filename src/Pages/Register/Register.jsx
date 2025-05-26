@@ -5,38 +5,21 @@ import { NavLink } from 'react-router';
 import registerLottie from '../../assets/lotties/register-lottie.json';
 
 const Register = () => {
-    const [formData, setFormData] = useState({
-        fullName: '',
-        email: '',
-        password: '',
-        phone: '',
-        terms: false
-    });
+
 
     const [showPassword, setShowPassword] = useState(false);
-    const [isSubmitting, setIsSubmitting] = useState(false);
     const [focusedField, setFocusedField] = useState(null);
 
-    const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: type === 'checkbox' ? checked : value
-        }));
-    };
-
-    const handleSubmit = (e) => {
+    const handleRegister = e => {
         e.preventDefault();
-        setIsSubmitting(true);
-        // Simulate API call
-        setTimeout(() => {
-            console.log('Form submitted:', formData);
-            setIsSubmitting(false);
-        }, 1500);
-    };
+        const form  = e.target;
+        const email = form.email.value;
+        const password = form.password.value;
+        console.log(email, password);
+    }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-50 to-indigo-50 flex items-center justify-center p-4">
+        <div className="min-h-screen  flex items-center justify-center p-4">
             <div className="max-w-6xl w-full flex flex-col lg:flex-row bg-white rounded-2xl shadow-xl overflow-hidden">
                 {/* Lottie Animation Side */}
                 <div className="hidden lg:flex flex-1 bg-gradient-to-br from-indigo-600 to-blue-600 p-8 items-center justify-center">
@@ -64,7 +47,7 @@ const Register = () => {
                         </p>
                     </div>
 
-                    <form className="space-y-6" onSubmit={handleSubmit}>
+                    <form className="space-y-6" onSubmit={handleRegister}>
                         {/* Full Name */}
                         <div className="space-y-1">
                             <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
@@ -79,8 +62,6 @@ const Register = () => {
                                     name="fullName"
                                     type="text"
                                     required
-                                    value={formData.fullName}
-                                    onChange={handleChange}
                                     onFocus={() => setFocusedField('fullName')}
                                     onBlur={() => setFocusedField(null)}
                                     className="py-3 pl-10 pr-4 block w-full border border-gray-300 rounded-lg focus:outline-none transition duration-200"
@@ -104,8 +85,6 @@ const Register = () => {
                                     type="email"
                                     autoComplete="email"
                                     required
-                                    value={formData.email}
-                                    onChange={handleChange}
                                     onFocus={() => setFocusedField('email')}
                                     onBlur={() => setFocusedField(null)}
                                     className="py-3 pl-10 pr-4 block w-full border border-gray-300 rounded-lg focus:outline-none transition duration-200"
@@ -127,8 +106,6 @@ const Register = () => {
                                     id="phone"
                                     name="phone"
                                     type="tel"
-                                    value={formData.phone}
-                                    onChange={handleChange}
                                     onFocus={() => setFocusedField('phone')}
                                     onBlur={() => setFocusedField(null)}
                                     className="py-3 pl-10 pr-4 block w-full border border-gray-300 rounded-lg focus:outline-none transition duration-200"
@@ -151,8 +128,6 @@ const Register = () => {
                                     name="password"
                                     type={showPassword ? "text" : "password"}
                                     required
-                                    value={formData.password}
-                                    onChange={handleChange}
                                     onFocus={() => setFocusedField('password')}
                                     onBlur={() => setFocusedField(null)}
                                     className="py-3 pl-10 pr-10 block w-full border border-gray-300 rounded-lg focus:outline-none transition duration-200"
@@ -170,17 +145,6 @@ const Register = () => {
                                     )}
                                 </button>
                             </div>
-                            <div className="flex items-center mt-2">
-                                <div className={`h-1 flex-1 rounded-full ${formData.password.length > 0 ? (formData.password.length < 4 ? 'bg-red-400' : formData.password.length < 8 ? 'bg-yellow-400' : 'bg-green-500') : 'bg-gray-200'}`}></div>
-                                <div className={`h-1 flex-1 rounded-full mx-1 ${formData.password.length > 3 ? (formData.password.length < 8 ? 'bg-yellow-400' : 'bg-green-500') : 'bg-gray-200'}`}></div>
-                                <div className={`h-1 flex-1 rounded-full ${formData.password.length > 7 ? 'bg-green-500' : 'bg-gray-200'}`}></div>
-                                <span className="ml-3 text-xs text-gray-500">
-                                    {formData.password.length > 0 ? (
-                                        formData.password.length < 4 ? 'Weak' : 
-                                        formData.password.length < 8 ? 'Medium' : 'Strong'
-                                    ) : ''}
-                                </span>
-                            </div>
                         </div>
 
                         {/* Terms */}
@@ -191,8 +155,6 @@ const Register = () => {
                                     name="terms"
                                     type="checkbox"
                                     required
-                                    checked={formData.terms}
-                                    onChange={handleChange}
                                     className="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
                                 />
                             </div>
@@ -214,23 +176,9 @@ const Register = () => {
                         <div>
                             <button
                                 type="submit"
-                                disabled={isSubmitting}
-                                className={`w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300 ${isSubmitting ? 'opacity-80' : ''}`}
+                                className={`w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300`}
                             >
-                                {isSubmitting ? (
-                                    <>
-                                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                        </svg>
-                                        Creating Account...
-                                    </>
-                                ) : (
-                                    <>
-                                        Get Started
-                                        <FiArrowRight className="ml-2 h-4 w-4" />
-                                    </>
-                                )}
+                                Get Started
                             </button>
                         </div>
                     </form>
