@@ -1,51 +1,33 @@
-import { useState } from 'react';
+import { use, useState } from 'react';
 import { NavLink } from 'react-router';
-import { FiMail, FiLock, FiEye, FiEyeOff, FiArrowRight } from 'react-icons/fi';
+import { FiMail, FiLock, FiEye, FiEyeOff } from 'react-icons/fi';
 import Lottie from 'lottie-react';
 import loginLottie from '../../assets/lotties/login-lottie.json'
+import AuthContext from '../../Contexts/AuthContext/AuthContext';
 
 const Login = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
+
+const {loginUser} = use(AuthContext)
+
   const [showPassword, setShowPassword] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [errors, setErrors] = useState({});
   const [focusedField, setFocusedField] = useState(null);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-    // Clear error when typing
-    if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
-    }
-  };
-
-  const validateForm = () => {
-    const newErrors = {};
-    if (!formData.email) newErrors.email = 'Email is required';
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email is invalid';
-    if (!formData.password) newErrors.password = 'Password is required';
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = (e) => {
+  const handleLogin = e => {
     e.preventDefault();
-    if (validateForm()) {
-      setIsSubmitting(true);
-      // Simulate API call
-      setTimeout(() => {
-        console.log('Login submitted:', formData);
-        setIsSubmitting(false);
-      }, 1500);
-    }
-  };
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+
+
+    loginUser(email, password)
+    .then(res => {
+      console.log(res.user);
+    })
+    .catch(error => {
+      console.log(error.message);
+    })
+  }
+  
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-indigo-50 flex items-center justify-center p-4">
@@ -76,7 +58,7 @@ const Login = () => {
             </p>
           </div>
 
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <form onSubmit={handleLogin} className="space-y-6" >
             {/* Email Field */}
             <div className="space-y-2">
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
@@ -91,15 +73,13 @@ const Login = () => {
                   name="email"
                   type="email"
                   autoComplete="email"
-                  value={formData.email}
-                  onChange={handleChange}
                   onFocus={() => setFocusedField('email')}
                   onBlur={() => setFocusedField(null)}
-                  className={`py-3 pl-10 pr-4 block w-full border ${errors.email ? 'border-red-300' : 'border-gray-300'} rounded-lg focus:outline-none transition duration-200`}
+                  className={`py-3 pl-10 pr-4 block w-full border border-gray-300 rounded-lg focus:outline-none transition duration-200`}
                   placeholder="you@example.com"
                 />
               </div>
-              {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
+              
             </div>
 
             {/* Password Field */}
@@ -116,11 +96,9 @@ const Login = () => {
                   name="password"
                   type={showPassword ? "text" : "password"}
                   autoComplete="current-password"
-                  value={formData.password}
-                  onChange={handleChange}
                   onFocus={() => setFocusedField('password')}
                   onBlur={() => setFocusedField(null)}
-                  className={`py-3 pl-10 pr-10 block w-full border ${errors.password ? 'border-red-300' : 'border-gray-300'} rounded-lg focus:outline-none transition duration-200`}
+                  className={`py-3 pl-10 pr-10 block w-full border  border-gray-300 rounded-lg focus:outline-none transition duration-200`}
                   placeholder="••••••••"
                 />
                 <button
@@ -135,7 +113,7 @@ const Login = () => {
                   )}
                 </button>
               </div>
-              {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password}</p>}
+              
             </div>
 
             {/* Remember & Forgot Password */}
@@ -163,23 +141,9 @@ const Login = () => {
             <div>
               <button
                 type="submit"
-                disabled={isSubmitting}
-                className={`w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300 ${isSubmitting ? 'opacity-80' : ''}`}
+                className={`w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-300 opacity-80`}
               >
-                {isSubmitting ? (
-                  <>
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Signing in...
-                  </>
-                ) : (
-                  <>
-                    Sign In
-                    <FiArrowRight className="ml-2 h-4 w-4" />
-                  </>
-                )}
+                Login
               </button>
             </div>
           </form>
