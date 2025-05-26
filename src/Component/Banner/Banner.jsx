@@ -1,6 +1,10 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { FiSearch, FiBriefcase, FiMapPin } from 'react-icons/fi';
+import team1 from '../../assets/images/team1.jpg'
+import team2 from '../../assets/images/team2.jpg'
+
+
 
 const Banner = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -13,34 +17,28 @@ const Banner = () => {
   };
 
   return (
-    <section className="bg-gradient-to-br from-indigo-100 via-blue-100 to-white py-20 px-6 lg:px-16">
+    <section className=" py-20 px-6 lg:px-16">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
         
         {/* Left Content */}
         <div className="space-y-8">
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
+          <h1
             className="text-5xl font-extrabold text-gray-900 leading-tight tracking-tight"
           >
-            Discover Your <span className="text-indigo-600">Dream Job</span> Today
-          </motion.h1>
+            Discover Your <motion.span 
+            animate={{
+              color: ['#1e81eb', '#651eeb', '#eb1e56', '#1eeb56'],
+              transition: {duration: 2, repeat: Infinity}
+            }}
+            className="text-indigo-600">Dream Job</motion.span> Today
+          </h1>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-lg text-gray-700"
-          >
+          <p className="text-lg text-gray-700">
             Explore thousands of top opportunities across the globe. Smart filters, quick access, and the best career matches.
-          </motion.p>
+          </p>
 
           {/* Glassmorphic Search Box */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.4 }}
+          <div
             className="bg-white/70 backdrop-blur-md p-6 rounded-2xl shadow-2xl border border-white/30"
           >
             <form onSubmit={handleSearch} className="space-y-4">
@@ -94,7 +92,7 @@ const Banner = () => {
                 Search Jobs
               </button>
             </form>
-          </motion.div>
+          </div>
         </div>
 
         {/* Right Visuals */}
@@ -102,26 +100,28 @@ const Banner = () => {
           {/* Top Image */}
           <motion.div
             animate={{ y: [0, -10, 0] }}
-            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-            className="absolute top-0 right-0 w-72 h-72 rounded-2xl overflow-hidden shadow-xl border-4 border-white"
+            transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
+            dir='ltb'
+            className="absolute top-0 right-0 max-w-sm h-auto overflow-hidden shadow-xl "
           >
             <img
-              src="https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+              src={team1}
               alt="Professional"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover rounded-t-2xl rounded-br-2xl border-s-8 border-b-8 border-indigo-500"
             />
           </motion.div>
 
           {/* Bottom Image */}
           <motion.div
-            animate={{ y: [0, 10, 0] }}
+            animate={{ x: [0, 10, 0] }}
             transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-            className="absolute bottom-0 left-0 w-72 h-72 rounded-2xl overflow-hidden shadow-xl border-4 border-white"
+            dir='ltb'
+            className="absolute bottom-0 left-0 max-w-sm h-auto overflow-hidden shadow-xl "
           >
             <img
-              src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+              src={team2}
               alt="Team Meeting"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover rounded-t-2xl rounded-br-2xl border-s-8 border-b-8 border-indigo-500"
             />
           </motion.div>
         </div>
