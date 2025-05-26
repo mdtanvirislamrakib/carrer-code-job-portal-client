@@ -27,10 +27,11 @@ const {loginUser} = use(AuthContext)
       console.log(error.message);
     })
   }
+
   
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-indigo-50 flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4">
       <div className="max-w-6xl w-full flex flex-col lg:flex-row bg-white rounded-2xl shadow-xl overflow-hidden">
         {/* Animation Side - Hidden on mobile */}
         <div className="hidden lg:flex flex-1 bg-gradient-to-br from-indigo-600 to-blue-600 p-8 items-center justify-center">

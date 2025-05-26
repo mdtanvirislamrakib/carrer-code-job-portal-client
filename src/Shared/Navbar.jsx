@@ -1,12 +1,15 @@
-import { useState, useEffect } from "react";
-import { NavLink } from "react-router";
-import { FiMenu, FiX, FiUser, FiLogIn } from "react-icons/fi";
+import { useState, useEffect, use } from "react";
+import { NavLink, useNavigate } from "react-router";
+import { FiMenu, FiX, FiUser, FiLogIn, FiLogOut } from "react-icons/fi";
+import AuthContext from "../Contexts/AuthContext/AuthContext";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-;
+  const { user, logout } = use(AuthContext);
+
+  const navigate = useNavigate();
 
   // Scroll effect
   useEffect(() => {
@@ -25,13 +28,27 @@ const Navbar = () => {
     { name: "Contact", path: "/contact" },
   ];
 
+  // sign out user
+  const handleLogOut = () => {
+    logout()
+    .then(() => {
+      alert("Logout Successfull");
+      navigate('/login')
+    })
+    .catch(err => {
+      alert(err.message);
+    })
+  }
+
+
+
+
   return (
     <header
-      className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-gradient-to-r from-blue-50 to-indigo-50 shadow-sm border-b border-gray-200"
-          : "bg-gradient-to-r from-blue-50 to-indigo-50"
-      }`}
+      className={`fixed w-full z-50 transition-all duration-300 ${isScrolled
+        ? "bg-gradient-to-r from-blue-50 to-indigo-50 shadow-sm"
+        : "bg-base-100"
+        }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
@@ -55,18 +72,16 @@ const Navbar = () => {
                 key={link.name}
                 to={link.path}
                 className={({ isActive }) => // isActive is now properly defined here
-                  `px-4 py-2 text-sm font-medium transition-colors duration-200 relative group ${
-                    isActive
-                      ? "text-indigo-600"
-                      : "text-gray-700 hover:text-indigo-600"
+                  `px-4 py-2 text-sm font-medium transition-colors duration-200 relative group ${isActive
+                    ? "text-indigo-600"
+                    : "text-gray-700 hover:text-indigo-600"
                   }`
                 }
               >
                 {link.name}
                 <span
-                  className={`absolute bottom-1 left-1/2 transform -translate-x-1/2 h-0.5 bg-gradient-to-r from-indigo-500 to-blue-500 w-0 group-hover:w-4/5 transition-all duration-300 rounded-full ${
-                    location.pathname === link.path ? "w-4/5" : ""
-                  }`}
+                  className={`absolute bottom-1 left-1/2 transform -translate-x-1/2 h-0.5 bg-gradient-to-r from-indigo-500 to-blue-500 w-0 group-hover:w-4/5 transition-all duration-300 rounded-full ${location.pathname === link.path ? "w-4/5" : ""
+                    }`}
                 ></span>
               </NavLink>
             ))}
@@ -75,22 +90,32 @@ const Navbar = () => {
           {/* Right Side Controls */}
           <div className="flex items-center space-x-4">
             {/* Auth Buttons - Desktop */}
-            <div className="hidden md:flex items-center space-x-3">
-              <NavLink
-                to="/login"
-                className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors flex items-center"
+            {
+              user ? <button
+                onClick={handleLogOut}
+                className="relative flex items-center px-4 py-2.5 text-sm font-medium rounded-lg bg-gradient-to-r from-indigo-50 to-blue-50 hover:from-indigo-100 hover:to-blue-100 text-indigo-700 hover:text-indigo-800 transition-all duration-300 group shadow-sm border border-indigo-100 cursor-pointer"
               >
-                <FiLogIn className="mr-2" />
-                Sign In
-              </NavLink>
-              <NavLink
-                to="/register"
-                className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-blue-600 rounded-lg hover:from-indigo-700 hover:to-blue-700 transition-all shadow-md hover:shadow-lg flex items-center"
-              >
-                <FiUser className="mr-2" />
-                Sign Up
-              </NavLink>
-            </div>
+                <FiLogOut className="mr-3 text-indigo-600 group-hover:text-indigo-700 group-hover:translate-x-0.5 transition-transform" />
+                <span className="font-semibold">Logout</span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-indigo-600 group-hover:w-full transition-all duration-300 rounded-full"></span>
+              </button> : <div className="hidden md:flex items-center space-x-3">
+                <NavLink
+                  to="/login"
+                  className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-indigo-600 transition-colors flex items-center"
+                >
+                  <FiLogIn className="mr-2" />
+                  Sign In
+                </NavLink>
+                <NavLink
+                  to="/register"
+                  className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-blue-600 rounded-lg hover:from-indigo-700 hover:to-blue-700 transition-all shadow-md hover:shadow-lg flex items-center"
+                >
+                  <FiUser className="mr-2" />
+                  Sign Up
+                </NavLink>
+              </div>
+            }
+
 
             {/* Mobile Menu Button */}
             <button
@@ -117,32 +142,43 @@ const Navbar = () => {
                 key={link.name}
                 to={link.path}
                 className={({ isActive }) => // isActive properly defined here
-                  `block px-4 py-3 text-base font-medium rounded-md transition-colors ${
-                    isActive
-                      ? "bg-indigo-50 text-indigo-600"
-                      : "text-gray-700 hover:bg-gray-100"
+                  `block px-4 py-3 text-base font-medium rounded-md transition-colors ${isActive
+                    ? "bg-indigo-50 text-indigo-600"
+                    : "text-gray-700 hover:bg-gray-100"
                   }`
                 }
               >
                 {link.name}
               </NavLink>
             ))}
-            <div className="pt-2 flex items-center justify-between  border-t border-gray-200">
-              <NavLink
-                to="/login"
-                className="px-4 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md transition-colors flex items-center"
+            {
+              user ? <button
+                onClick={handleLogOut}
+                className="relative flex items-center px-4 py-2.5 text-sm font-medium rounded-lg bg-gradient-to-r from-indigo-50 to-blue-50 hover:from-indigo-100 hover:to-blue-100 text-indigo-700 hover:text-indigo-800 transition-all duration-300 group shadow-sm border border-indigo-100 cursor-pointer"
               >
-                <FiLogIn className="mr-2" />
-                Sign In
-              </NavLink>
-              <NavLink
-                to="/register"
-                className="px-4 py-3 mt-1 text-base font-medium text-white bg-gradient-to-r from-indigo-600 to-blue-600 rounded-md hover:from-indigo-700 hover:to-blue-700 transition-all flex items-center"
-              >
-                <FiUser className="mr-2" />
-                Sign Up
-              </NavLink>
-            </div>
+                <FiLogOut className="mr-3 text-indigo-600 group-hover:text-indigo-700 group-hover:translate-x-0.5 transition-transform" />
+                <span className="font-semibold">Logout</span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-indigo-600 group-hover:w-full transition-all duration-300 rounded-full"></span>
+              </button> : <div className="pt-2 flex items-center justify-between  border-t border-gray-200">
+
+                <NavLink
+                  to="/login"
+                  className="px-4 py-3 text-base font-medium text-gray-700 hover:bg-gray-100 rounded-md transition-colors flex items-center"
+                >
+                  <FiLogIn className="mr-2" />
+                  Sign In
+                </NavLink>
+                <NavLink
+                  to="/register"
+                  className="px-4 py-3 mt-1 text-base font-medium text-white bg-gradient-to-r from-indigo-600 to-blue-600 rounded-md hover:from-indigo-700 hover:to-blue-700 transition-all flex items-center"
+                >
+                  <FiUser className="mr-2" />
+                  Sign Up
+                </NavLink>
+
+              </div>
+            }
+
           </div>
         </div>
       )}
