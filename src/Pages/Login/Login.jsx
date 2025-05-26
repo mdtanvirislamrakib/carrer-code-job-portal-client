@@ -4,10 +4,11 @@ import { FiMail, FiLock, FiEye, FiEyeOff } from 'react-icons/fi';
 import Lottie from 'lottie-react';
 import loginLottie from '../../assets/lotties/login-lottie.json'
 import AuthContext from '../../Contexts/AuthContext/AuthContext';
+import { FcGoogle } from 'react-icons/fc';
 
 const Login = () => {
 
-const {loginUser} = use(AuthContext)
+  const { loginUser, googleLogin } = use(AuthContext)
 
   const [showPassword, setShowPassword] = useState(false);
   const [focusedField, setFocusedField] = useState(null);
@@ -20,15 +21,26 @@ const {loginUser} = use(AuthContext)
 
 
     loginUser(email, password)
+      .then(res => {
+        console.log(res.user);
+      })
+      .catch(error => {
+        console.log(error.message);
+      })
+  }
+
+  // handle google login
+  const handleGoogleLogin = () => {
+    googleLogin()
     .then(res => {
       console.log(res.user);
     })
-    .catch(error => {
-      console.log(error.message);
+    .catch(err => {
+      console.log(err.message);
     })
   }
 
-  
+
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
@@ -36,8 +48,8 @@ const {loginUser} = use(AuthContext)
         {/* Animation Side - Hidden on mobile */}
         <div className="hidden lg:flex flex-1 bg-gradient-to-br from-indigo-600 to-blue-600 p-8 items-center justify-center">
           <div className="w-full max-w-md">
-            <Lottie 
-              animationData={loginLottie} 
+            <Lottie
+              animationData={loginLottie}
               loop={true}
               className="w-full h-auto"
             />
@@ -80,7 +92,7 @@ const {loginUser} = use(AuthContext)
                   placeholder="you@example.com"
                 />
               </div>
-              
+
             </div>
 
             {/* Password Field */}
@@ -114,7 +126,7 @@ const {loginUser} = use(AuthContext)
                   )}
                 </button>
               </div>
-              
+
             </div>
 
             {/* Remember & Forgot Password */}
@@ -158,15 +170,24 @@ const {loginUser} = use(AuthContext)
               <div className="relative flex justify-center text-sm">
                 <span className="px-2 bg-white text-gray-500">
                   Don't have an account?{' '}
-                  <NavLink 
-                    to="/register" 
+                  <NavLink
+                    to="/register"
                     className="font-medium text-indigo-600 hover:text-indigo-500"
                   >
                     Sign up
                   </NavLink>
                 </span>
               </div>
+              
             </div>
+
+            {/*  signup with google button  */}
+            <button onClick={handleGoogleLogin} className='flex items-center gap-2 justify-center border w-full mx-auto py-2 border-gray-500 rounded-lg mt-10 cursor-pointer hover:rounded-2xl transition-all text-lg font-bold hover:bg-indigo-50'>
+              <FcGoogle size={25}></FcGoogle>
+              <p>Sign Up with google</p>
+            </button>
+
+
           </div>
         </div>
       </div>

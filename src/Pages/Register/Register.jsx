@@ -4,17 +4,14 @@ import { FiUser, FiMail, FiLock, FiPhone, FiEye, FiEyeOff, FiArrowRight } from '
 import { NavLink } from 'react-router';
 import registerLottie from '../../assets/lotties/register-lottie.json';
 import AuthContext from '../../Contexts/AuthContext/AuthContext';
+import { FcGoogle } from 'react-icons/fc'
 
 const Register = () => {
 
-    const { registerUser } = use(AuthContext)
-
+    const { registerUser, googleLogin } = use(AuthContext)
 
     const [showPassword, setShowPassword] = useState(false);
     const [focusedField, setFocusedField] = useState(null);
-
-
-
 
 
 
@@ -27,14 +24,24 @@ const Register = () => {
 
         // handle register user
         registerUser(email, password)
-        .then(result => {
-            console.log(result.user);
-        })
-        .catch(error => {
-            console.error("Registration error:", error);
-        });
+            .then(result => {
+                console.log(result.user);
+            })
+            .catch(error => {
+                console.error("Registration error:", error);
+            });
 
 
+    }
+
+    const handleGoogleLogin = () => {
+        googleLogin()
+            .then(res => {
+                console.log(res.user);
+            })
+            .catch(err => {
+                console.log(err.message);
+            })
     }
 
     return (
@@ -220,6 +227,10 @@ const Register = () => {
                             </div>
                         </div>
                     </div>
+                <button onClick={handleGoogleLogin} className='flex items-center gap-2 justify-center border w-full mx-auto py-2 border-gray-500 rounded-lg mt-10 cursor-pointer hover:rounded-2xl transition-all text-lg font-bold hover:bg-indigo-50'>
+                    <FcGoogle size={25}></FcGoogle>
+                    <p>Sign Up with google</p>
+                </button>
                 </div>
             </div>
         </div>
