@@ -1,21 +1,40 @@
 import Lottie from 'lottie-react';
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import { FiUser, FiMail, FiLock, FiPhone, FiEye, FiEyeOff, FiArrowRight } from 'react-icons/fi';
 import { NavLink } from 'react-router';
 import registerLottie from '../../assets/lotties/register-lottie.json';
+import AuthContext from '../../Contexts/AuthContext/AuthContext';
 
 const Register = () => {
+
+    const { registerUser } = use(AuthContext)
 
 
     const [showPassword, setShowPassword] = useState(false);
     const [focusedField, setFocusedField] = useState(null);
 
+
+
+
+
+
     const handleRegister = e => {
         e.preventDefault();
-        const form  = e.target;
+        const form = e.target;
         const email = form.email.value;
         const password = form.password.value;
         console.log(email, password);
+
+        // handle register user
+        registerUser(email, password)
+        .then(result => {
+            console.log(result.user);
+        })
+        .catch(error => {
+            console.error("Registration error:", error);
+        });
+
+
     }
 
     return (
@@ -24,8 +43,8 @@ const Register = () => {
                 {/* Lottie Animation Side */}
                 <div className="hidden lg:flex flex-1 bg-gradient-to-br from-indigo-600 to-blue-600 p-8 items-center justify-center">
                     <div className="w-full max-w-md">
-                        <Lottie 
-                            animationData={registerLottie} 
+                        <Lottie
+                            animationData={registerLottie}
                             loop={true}
                             className="w-full h-auto"
                         />
@@ -191,8 +210,8 @@ const Register = () => {
                             <div className="relative flex justify-center text-sm">
                                 <span className="px-2 bg-white text-gray-500">
                                     Already have an account?{' '}
-                                    <NavLink 
-                                        to="/login" 
+                                    <NavLink
+                                        to="/login"
                                         className="font-medium text-indigo-600 hover:text-indigo-500"
                                     >
                                         Sign in
