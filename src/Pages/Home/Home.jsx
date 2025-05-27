@@ -14,7 +14,9 @@ const Home = () => {
             <Banner></Banner>
             <BrowseByCategory></BrowseByCategory>
 
-            <JobsOfTheDay jobsDataPromise = {jobsDataPromise}></JobsOfTheDay>
+            <JobsOfTheDay jobsDataPromise={jobsDataPromise}></JobsOfTheDay>
+
+
         </div>
     );
 };
