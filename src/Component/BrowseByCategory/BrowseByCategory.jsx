@@ -53,18 +53,31 @@ const BrowseByCategory = () => {
                     </div>
 
                     <Swiper
-                        modules={[Pagination, Grid]} // Grid মডিউল যুক্ত করলাম
+                        modules={[Pagination, Grid]}
                         spaceBetween={20}
-                        slidesPerView={3}          // প্রতি row তে 3টা slide দেখাবে
-                        grid={{ rows: 2, fill: 'row' }}  // 2 টা row দেখাবে, fill='row' মানে পূরণ হবে row-wise
+                        slidesPerView={2} // ✅ fallback value
+                        grid={{ rows: 3 }} // ✅ fallback value
                         pagination={{ clickable: true }}
                         speed={600}
                         breakpoints={{
-                            640: { slidesPerView: 2, grid: { rows: 2 } },
-                            768: { slidesPerView: 3, grid: { rows: 2 } },
-                            1024: { slidesPerView: 4, grid: { rows: 2 } },
-                            1280: { slidesPerView: 5, grid: { rows: 2 } },
+                            0: {
+                                slidesPerView: 2,
+                                grid: { rows: 4, fill: 'row' }, // Mobile: 2x3
+                            },
+                            740: {
+                                slidesPerView: 3,
+                                grid: { rows: 3, fill: 'row' }, // Tablet: 4x2
+                            },
+                            1024: {
+                                slidesPerView: 4,
+                                grid: { rows: 2, fill: 'row' }, // Desktop: 5x2
+                            },
+                            1400: {
+                                slidesPerView: 5,
+                                grid: { rows: 2, fill: 'row' }, // Desktop: 5x2
+                            },
                         }}
+
                     >
                         {categories.map((category, index) => (
                             <SwiperSlide key={index}>
@@ -90,7 +103,7 @@ const BrowseByCategory = () => {
             <style jsx>{`
                 /* Pagination ডট নিচে নামানোর জন্য */
                 .swiper-pagination {
-                    bottom: 15px !important;
+                    bottom: 0px !important;
                 }
             `}</style>
         </>
