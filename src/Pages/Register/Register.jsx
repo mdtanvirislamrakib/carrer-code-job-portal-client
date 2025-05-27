@@ -1,7 +1,7 @@
 import Lottie from 'lottie-react';
 import React, { use, useState } from 'react';
 import { FiUser, FiMail, FiLock, FiPhone, FiEye, FiEyeOff, FiArrowRight } from 'react-icons/fi';
-import { NavLink } from 'react-router';
+import { NavLink, useLocation, useNavigate } from 'react-router';
 import registerLottie from '../../assets/lotties/register-lottie.json';
 import AuthContext from '../../Contexts/AuthContext/AuthContext';
 import { FcGoogle } from 'react-icons/fc'
@@ -14,6 +14,9 @@ const Register = () => {
     const [focusedField, setFocusedField] = useState(null);
 
 
+    const navigate = useNavigate();
+    const location = useLocation()
+    const from = location.state || '/';
 
     const handleRegister = e => {
         e.preventDefault();
@@ -26,6 +29,7 @@ const Register = () => {
         registerUser(email, password)
             .then(result => {
                 console.log(result.user);
+                navigate(from)
             })
             .catch(error => {
                 console.error("Registration error:", error);
@@ -38,6 +42,7 @@ const Register = () => {
         googleLogin()
             .then(res => {
                 console.log(res.user);
+                navigate(from)
             })
             .catch(err => {
                 console.log(err.message);
@@ -227,10 +232,10 @@ const Register = () => {
                             </div>
                         </div>
                     </div>
-                <button onClick={handleGoogleLogin} className='flex items-center gap-2 justify-center border w-full mx-auto py-2 border-gray-500 rounded-lg mt-10 cursor-pointer hover:rounded-2xl transition-all text-lg font-bold hover:bg-indigo-50'>
-                    <FcGoogle size={25}></FcGoogle>
-                    <p>Sign Up with google</p>
-                </button>
+                    <button onClick={handleGoogleLogin} className='flex items-center gap-2 justify-center border w-full mx-auto py-2 border-gray-500 rounded-lg mt-10 cursor-pointer hover:rounded-2xl transition-all text-lg font-bold hover:bg-indigo-50'>
+                        <FcGoogle size={25}></FcGoogle>
+                        <p>Sign Up with google</p>
+                    </button>
                 </div>
             </div>
         </div>

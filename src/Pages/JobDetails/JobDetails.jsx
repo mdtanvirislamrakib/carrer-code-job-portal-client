@@ -1,7 +1,7 @@
 import React from 'react';
 import { Briefcase, MapPin, Clock, Mail, BadgeCheck, ArrowLeft } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useLoaderData, useNavigate } from 'react-router';
+import { Link, useLoaderData, useNavigate } from 'react-router';
 import Lottie from 'lottie-react';
 import detailsLottie from '../../assets/lotties/details-lottie.json';
 
@@ -124,14 +124,11 @@ const JobDetails = () => {
                 </div>
 
                 {/* Apply Button */}
-                <motion.a
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    href={`mailto:${job.hr_email}`}
-                    className="mt-4 md:mt-0 px-6 py-2 bg-indigo-600 text-white rounded-md font-semibold transition-all shadow hover:bg-indigo-700"
-                >
-                    Apply Now
-                </motion.a>
+                <Link to={`/jobApply/${job._id}`}>
+                    <button className="mt-4 md:mt-0 px-6 py-2 bg-indigo-600 text-white rounded-md font-semibold transition-all shadow hover:bg-indigo-700">
+                        Apply Now
+                    </button>
+                </Link>
             </div>
         </motion.section>
     );

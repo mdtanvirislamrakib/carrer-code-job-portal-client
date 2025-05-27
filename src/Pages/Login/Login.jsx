@@ -1,5 +1,5 @@
 import { use, useState } from 'react';
-import { NavLink } from 'react-router';
+import { NavLink, useLocation, useNavigate } from 'react-router';
 import { FiMail, FiLock, FiEye, FiEyeOff } from 'react-icons/fi';
 import Lottie from 'lottie-react';
 import loginLottie from '../../assets/lotties/login-lottie.json'
@@ -13,6 +13,12 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [focusedField, setFocusedField] = useState(null);
 
+  const navigate = useNavigate();
+
+  const location = useLocation();
+  const from = location.state || '/';
+
+  // email password login
   const handleLogin = e => {
     e.preventDefault();
     const form = e.target;
@@ -23,6 +29,7 @@ const Login = () => {
     loginUser(email, password)
       .then(res => {
         console.log(res.user);
+        navigate(from)
       })
       .catch(error => {
         console.log(error.message);
@@ -34,6 +41,7 @@ const Login = () => {
     googleLogin()
     .then(res => {
       console.log(res.user);
+      navigate(from)
     })
     .catch(err => {
       console.log(err.message);
