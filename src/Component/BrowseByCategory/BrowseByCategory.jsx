@@ -100,7 +100,7 @@ const BrowseByCategory = () => {
                 </div>
             </section>
 
-            <style jsx>{`
+            <style>{`
                 /* Pagination ডট নিচে নামানোর জন্য */
                 .swiper-pagination {
                     bottom: 0px !important;

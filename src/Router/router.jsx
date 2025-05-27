@@ -10,7 +10,7 @@ import Login from '../Pages/Login/Login';
 import JobDetails from '../Pages/JobDetails/JobDetails';
 import Loader from "../Shared/Loader"
 import PrivetRoute from '../Contexts/AuthContext/AuthProvider/PrivetRoute';
-import ApplyNow from '../Component/JobApply/JobApply';
+import JobApply from '../Component/JobApply/JobApply';
 
 
 const router = createBrowserRouter([
@@ -39,8 +39,10 @@ const router = createBrowserRouter([
       {
         path: "/jobApply/:id",
         element: <PrivetRoute>
-          <ApplyNow></ApplyNow>
-        </PrivetRoute>
+          <JobApply></JobApply>
+        </PrivetRoute>,
+        loader: ({params}) => fetch(`http://localhost:5000/jobs/${params.id}`),
+        hydrateFallbackElement: <Loader></Loader>,
       }
     ]
   },
