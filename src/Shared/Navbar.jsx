@@ -23,10 +23,13 @@ const Navbar = () => {
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "Jobs", path: "/jobs" },
-    { name: "Companies", path: "/companies" },
     { name: "About", path: "/about" },
     { name: "Contact", path: "/contact" },
+    
   ];
+  if(user) {
+    navLinks.push({ name: "My-Application", path: "/MyApplication" })
+  }
 
   // sign out user
   const handleLogOut = () => {
