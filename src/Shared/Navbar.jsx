@@ -28,6 +28,7 @@ const Navbar = () => {
   if(user) {
     navLinks.push({ name: "My-Application", path: "/MyApplication" })
     navLinks.push({ name: "Add Job", path: "/addJob" })
+    navLinks.push({ name: "My Posted Job", path: "/myPostedJob" })
   }
 
   // sign out user

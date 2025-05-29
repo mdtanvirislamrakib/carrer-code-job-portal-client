@@ -13,6 +13,7 @@ import PrivetRoute from '../Contexts/AuthContext/AuthProvider/PrivetRoute';
 import JobApply from '../Component/JobApply/JobApply';
 import MyApplication from '../Pages/MyApplication/MyApplication';
 import JobAdd from '../Pages/JobAdd/JobAdd';
+import MyPostedJob from '../Pages/MyPostedJob/MyPostedJob';
 
 
 const router = createBrowserRouter([
@@ -50,6 +51,12 @@ const router = createBrowserRouter([
         path: "/addJob",
         element: <PrivetRoute>
           <JobAdd></JobAdd>
+        </PrivetRoute>
+      },
+      {
+        path: "/myPostedJob",
+        element: <PrivetRoute>
+          <MyPostedJob></MyPostedJob>
         </PrivetRoute>
       },
       {
