@@ -22,13 +22,12 @@ const Navbar = () => {
 
   const navLinks = [
     { name: "Home", path: "/" },
-    { name: "Jobs", path: "/jobs" },
     { name: "About", path: "/about" },
-    { name: "Contact", path: "/contact" },
     
   ];
   if(user) {
     navLinks.push({ name: "My-Application", path: "/MyApplication" })
+    navLinks.push({ name: "Add Job", path: "/addJob" })
   }
 
   // sign out user
