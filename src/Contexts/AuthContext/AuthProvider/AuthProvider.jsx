@@ -3,6 +3,7 @@ import AuthContext from '../AuthContext';
 import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from 'firebase/auth';
 import {app} from '../../../Firebase/firebase.init'
 import { getAuth } from "firebase/auth";
+import axios from 'axios';
 
 
 
@@ -47,6 +48,14 @@ const AuthProvider = ({ children }) => {
         const unSubscribe = onAuthStateChanged(auth, currentUser => {
             setUser(currentUser);
             setLoading(false);
+            if(currentUser?.email) {
+                const userData = {email: currentUser.email}
+                axios.post('http://localhost:5000/jwt', userData)
+                .then(res => {
+                    console.log("Toke afte JWT", res.data);
+                })
+                .catch(err => console.log(err))
+            }
         })
         return () => {
             unSubscribe();
