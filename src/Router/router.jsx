@@ -14,6 +14,7 @@ import JobApply from '../Component/JobApply/JobApply';
 import MyApplication from '../Pages/MyApplication/MyApplication';
 import JobAdd from '../Pages/JobAdd/JobAdd';
 import MyPostedJob from '../Pages/MyPostedJob/MyPostedJob';
+import ViewApplications from '../Pages/ViewApplications/ViewApplications';
 
 
 const router = createBrowserRouter([
@@ -46,6 +47,14 @@ const router = createBrowserRouter([
         element: <PrivetRoute>
           <MyApplication></MyApplication>
         </PrivetRoute>,
+      },
+      {
+        path : "/applications/:job_id",
+        element: <PrivetRoute>
+          <ViewApplications></ViewApplications>
+        </PrivetRoute>,
+        loader: ({params}) => fetch(`http://localhost:5000/applications/job/${params.job_id}`),
+        hydrateFallbackElement: <Loader></Loader>
       },
       {
         path: "/addJob",
