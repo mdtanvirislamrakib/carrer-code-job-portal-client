@@ -49,8 +49,10 @@ const AuthProvider = ({ children }) => {
             setUser(currentUser);
             setLoading(false);
             if(currentUser?.email) {
-                const userData = {email: currentUser.email}
-                axios.post('http://localhost:5000/jwt', userData)
+                const userData = {email: currentUser?.email}
+                axios.post('http://localhost:5000/jwt', userData, {
+                    withCredentials: true
+                })
                 .then(res => {
                     console.log("Toke afte JWT", res.data);
                 })
