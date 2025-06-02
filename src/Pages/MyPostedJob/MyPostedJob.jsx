@@ -7,7 +7,11 @@ const MyPostedJob = () => {
 
     const { user } = use(AuthContext);
 
-    const jobUploadPromise = fetch(`http://localhost:5000/jobs?email=${user.email}`).then(res => res.json())
+    const jobUploadPromise = fetch(`http://localhost:5000/jobs?email=${user.email}`, {
+        headers: {
+            authorization: `Bearer ${user.accessToken}`
+        },
+    }).then(res => res.json())
 
     return (
         <div>
